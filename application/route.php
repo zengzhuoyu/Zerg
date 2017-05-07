@@ -9,26 +9,9 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-//return [
-//    '__pattern__' => [
-//        'name' => '\w+',
-//    ],
-//    '[hello]'     => [
-//        ':id'   => ['index/hello', ['method' => 'get'], ['id' => '\d+']],
-//        ':name' => ['index/hello', ['method' => 'post']],
-//    ],
-//
-//];
-
 use think\Route;
 
-//Route::rule('hello','sample/Test/hello','get',['https' => false]);
+//获取指定id的banner信息
+Route::get('banner/:id','api/v1.Banner/getBanner');
 
-//Route::rule('hello','sample/Test/hello','get|post',['https' => false]);
 
-//Route::get('hello','sample/Test/hello');
-//Route::post('hello','sample/Test/hello');
-//Route::any('hello','sample/Test/hello');
-
-//Route::get('hello/:id','sample/Test/hello');
-Route::post('hello/:id','sample/Test/hello');
