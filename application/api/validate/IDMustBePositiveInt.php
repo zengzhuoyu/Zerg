@@ -8,13 +8,10 @@
 
 namespace app\api\validate;
 
-
-use think\Validate;
-
-class IDMustBePositiveInt extends Validate{
+class IDMustBePositiveInt extends BaseValidate{
 
     protected $rule = [
-        'id' => 'required|isPositiveInteger'
+        'id' => 'require|isPositiveInteger'
     ];
 
     protected function isPositiveInteger($value,$rule = '',$data = '',$field = '')
