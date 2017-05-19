@@ -9,8 +9,8 @@
 namespace app\lib\exception;
 
 use think\Exception;
-use think\exception\Handle;
-use think\Request;//继承tp5异常处理类
+use think\exception\Handle;//继承tp5异常处理类
+use think\Request;
 
 class ExceptionHandler extends Handle{
 

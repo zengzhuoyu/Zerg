@@ -8,7 +8,6 @@
 
 namespace app\api\validate;
 
-
 use think\Exception;
 use think\Request;
 use think\Validate;
