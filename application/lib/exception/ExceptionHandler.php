@@ -17,12 +17,12 @@ class ExceptionHandler extends Handle{
     private $code;
     private $msg;
     private $errorCode;
-    //返回客户端当前请求的url路径
 
     //重写错误返回的格式
     public function render(Exception $e)
     {
         if($e instanceof BaseException){
+
             //如果是自定义的异常
             $this->code = $e->code;
             $this->msg = $e->msg;
@@ -30,7 +30,7 @@ class ExceptionHandler extends Handle{
         }else{
             $this->code = 500;
             $this->msg = '服务器内部错误，不想告诉你';
-            $this->errorCode = 999;//需要写进api文档
+            $this->errorCode = 999;//需要记录在api文档里说明
         }
 
         $request = Request::instance();
@@ -38,7 +38,7 @@ class ExceptionHandler extends Handle{
         $result = [
             'msg' => $this->msg,
             'error_code' => $this->errorCode,
-            'request_url' => $request->url()
+            'request_url' => $request->url()//返回客户端当前请求的url路径
         ];
 
         return json($result,$this->code);

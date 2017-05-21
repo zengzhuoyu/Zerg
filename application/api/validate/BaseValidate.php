@@ -8,7 +8,7 @@
 
 namespace app\api\validate;
 
-use think\Exception;
+use app\lib\exception\BaseException;
 use think\Request;
 use think\Validate;
 
@@ -26,7 +26,7 @@ class BaseValidate extends Validate{
 
         if(!$result){
             $error = $this->error;
-            throw new Exception($error);
+            throw new BaseException($error);
         }else{
             return true;
         }
