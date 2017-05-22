@@ -8,7 +8,7 @@
 
 namespace app\lib\exception;
 
-use think\Exception;
+// use Exception;
 use think\exception\Handle;//继承tp5异常处理类
 use think\Request;
 
@@ -19,7 +19,7 @@ class ExceptionHandler extends Handle{
     private $errorCode;
 
     //重写错误返回的格式
-    public function render(Exception $e)
+    public function render(\Exception $e)
     {
         if($e instanceof BaseException){
 
