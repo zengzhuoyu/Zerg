@@ -10,6 +10,7 @@ namespace app\lib\exception;
 
 // use Exception;
 use think\exception\Handle;//继承tp5异常处理类
+use think\Log;
 use think\Request;
 
 class ExceptionHandler extends Handle{
@@ -31,6 +32,7 @@ class ExceptionHandler extends Handle{
             $this->code = 500;
             $this->msg = '服务器内部错误，不想告诉你';
             $this->errorCode = 999;//需要记录在api文档里说明
+            $this->recordErrorLog($e);
         }
 
         $request = Request::instance();
@@ -43,5 +45,17 @@ class ExceptionHandler extends Handle{
 
         return json($result,$this->code);
 
+    }
+
+    private function recordErrorLog(\Exception $e)
+    {
+        //初始化日志
+        Log::init([
+            'type'=>'File',
+            'path'=>LOG_PATH,
+            'level'=>['error']//错误级别，所以之后用到的级别只有高于error才能被记录
+        ]);
+        //param：错误信息 错误级别
+        Log::record($e->getMessage(),'error');
     }
 }
