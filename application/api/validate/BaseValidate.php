@@ -9,10 +9,12 @@
 namespace app\api\validate;
 
 use app\lib\exception\BaseException;
+use app\lib\exception\ParameterException;
 use think\Request;
 use think\Validate;
 
-class BaseValidate extends Validate{
+class BaseValidate extends Validate
+{
 
     public function goCheck()
     {
@@ -22,11 +24,23 @@ class BaseValidate extends Validate{
         $params = $request->param();
 
         //对这些参数做校验
-        $result = $this->check($params);
+//        $result = $this->check($params);
+        //批量验证
+        $result = $this->batch()->check($params);
 
         if(!$result){
-            $error = $this->error;
-            throw new BaseException($error);
+//            $error = $this->error;
+//            throw new BaseException($error);
+
+            $e = new ParameterException([
+                'msg' => $this->error
+            ]);
+
+//            //外部访问成员变量的方式不可取
+//            $e->msg = $this->error;
+//            $e->errorCode = 10002;
+
+            throw $e;
         }else{
             return true;
         }

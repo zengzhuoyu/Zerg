@@ -29,10 +29,19 @@ class ExceptionHandler extends Handle{
             $this->msg = $e->msg;
             $this->errorCode = $e->errorCode;
         }else{
-            $this->code = 500;
-            $this->msg = '服务器内部错误，不想告诉你';
-            $this->errorCode = 999;//需要记录在api文档里说明
-            $this->recordErrorLog($e);
+
+            if(config('app_debug')){//返回默认错误页面（出错时tp自带的默认错误页面）
+
+                //调用父类的render方法
+                return parent::render($e);
+
+            }else{
+                $this->code = 500;
+                $this->msg = '服务器内部错误，不想告诉你';
+                $this->errorCode = 999;//需要记录在api文档里说明
+                $this->recordErrorLog($e);
+            }
+
         }
 
         $request = Request::instance();
