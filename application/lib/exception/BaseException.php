@@ -22,13 +22,13 @@ class BaseException extends Exception
     //自定义错误码
     public $errorCode = 10000;
 
-    public function __construct(array $params = [])
+    public function __construct($params = [])
     {
-//        if(!is_array($params)){
-//            return;
-//            //或者
-////            throw new Exception('参数必须是数组');
-//        }
+       if(!is_array($params)){
+           return;
+           //或者
+//            throw new Exception('参数必须是数组');
+       }
 
         if(array_key_exists('code',$params)){
             $this->code = $params['code'];
