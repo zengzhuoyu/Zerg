@@ -12,6 +12,6 @@
 use think\Route;
 
 //获取指定id的banner信息
-Route::get('banner/:id','api/v1.Banner/getBanner');
+Route::get('api/v1/banner/:id','api/v1.Banner/getBanner');
 
 
