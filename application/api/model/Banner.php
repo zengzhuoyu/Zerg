@@ -2,26 +2,25 @@
 
 namespace app\api\model;
 
-//use think\Db;
-//use think\Exception;
 use think\Model;
 
-class Banner extends Model
+class Banner extends BaseModel
 {
-//	public static function getBannerById($id)
-//	{
-//        //原生sql
-////        $result = Db::query('select * from banner_item where banner_id=?',[$id]);
-////        return $result;
-//
-//        //查询构造器
-////        $result = Db::table('banner_item')->where('banner_id',$id)->select();
-//        //闭包写法
-//        $result = Db::table('banner_item')
-//            ->where(function ($query) use($id){
-//                $query->where('banner_id',$id);
-//            })
-//            ->select();
-//        return $result;
-//	}
+    protected $hidden = [
+        'delete_time',
+        'update_time'
+    ];
+
+    public function items()
+    {
+        return $this->hasMany('BannerItem','banner_id','id');//关联的模型、关联模型的外键、当前模型的主键
+    }
+
+    public static function getBannerById($id)
+    {
+        $banner = self::with(['items','items.img'])
+            ->find($id);
+
+        return $banner;
+    }
 }

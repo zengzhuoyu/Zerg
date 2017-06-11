@@ -45,4 +45,17 @@ class BaseValidate extends Validate
             return true;
         }
     }
+
+    protected function isPositiveInteger($value,$rule = '',$data = '',$field = '')
+    {
+        //验证正整数规则
+        if(is_numeric($value) && is_int($value + 0) && ($value + 0) > 0){
+            return true;
+        }
+
+        //自定义错误返回信息
+        return false;
+    }
+
+
 }
