@@ -5,6 +5,7 @@ namespace app\api\controller\v1;
 use app\api\validate\IDCollection;
 
 use app\api\model\Theme as ThemeModel;
+use app\api\validate\IDMustBePositiveInt;
 use app\lib\exception\ThemeMissException;
 
 class Theme
@@ -21,10 +22,24 @@ class Theme
         $result = ThemeModel::with('topicImg,headImg')
             ->select($ids);
 
-        if(!$result){
+        if($result->isEmpty()){
             throw new ThemeMissException();
         }
         return $result;
 
+    }
+
+    /*
+     * 获得专题详情
+     * @url /theme/:id
+     */
+    public function getComplexOne($id)
+    {
+        (new IDMustBePositiveInt())->goCheck();
+        $theme = ThemeModel::getThemeWithProducts($id);
+        if(!$theme){
+            throw new ThemeMissException();
+        }
+        return $theme;
     }
 }
