@@ -9,6 +9,7 @@
 namespace app\api\service;
 
 use app\lib\exception\TokenException;
+use app\lib\exception\WeChatException;
 use think\Exception;
 
 use app\api\model\User as UserModel;
@@ -43,7 +44,7 @@ class UserToken extends Token
             if($loginFail){
                 $this->processLoginError($wxResult);
             }else{
-                $this->grantToken($wxResult);
+                return $this->grantToken($wxResult);
             }
         }
     }
@@ -52,6 +53,7 @@ class UserToken extends Token
     {
         $openid = $wxResult['openid'];
         $user = UserModel::getByOpenID($openid);
+
         if($user){
             $uid = $user->id;
         }else{
