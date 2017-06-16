@@ -10,7 +10,8 @@ namespace app\api\controller\v1;
 
 use app\api\model\Category as CategoryModel;
 
-class Category {
+class Category
+{
 
     public function getAllCategories()
     {

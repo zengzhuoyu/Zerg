@@ -13,7 +13,8 @@ use app\api\model\Banner as BannerModel;
 use app\lib\exception\BannerMissException;
 //use think\Exception;
 
-class Banner {
+class Banner
+{
 
     /**
      * 获取指定id的banner信息
