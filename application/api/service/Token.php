@@ -110,4 +110,18 @@ class Token
         }
     }
 
+    //检测当前用户 是否等于 订单的下单用户user_id
+    public static function isValidOperate($checkUID)
+    {
+        if(!$checkUID){
+            throw new Exception('检查UID时必须传入一个被检查的UID');
+        }
+
+        $currentOperateUID = self::getCurrentUid();
+        if($currentOperateUID == $checkUID){
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -25,8 +25,4 @@ class BaseController extends Controller
         Token::needPrimaryScope();
     }
 
-    protected function checkSuperScope()
-    {
-        Token::needSuperScope();
-    }
 }
