@@ -38,10 +38,11 @@ class Order
         $status = $this->getOrderStatus();
 
         if (!$status['pass']) {
-            $status['order_id'] = -1;
+            $status['order_id'] = -1;//?
             return $status;
         }
 
+        //创建订单（插入表:order 和 order_product）
         $orderSnap = $this->snapOrder($status);
         $order = $this->createOrder($orderSnap);
 
@@ -58,6 +59,7 @@ class Order
         try{
 
             $orderNo = $this->makeOrderNo();
+
             $order = new \app\api\model\Order();
             $order->user_id = $this->uid;
             $order->order_no = $orderNo;
@@ -66,14 +68,13 @@ class Order
             $order->snap_img = $snap['snapImg'];
             $order->snap_name = $snap['snapName'];
             $order->snap_address = $snap['snapAddress'];
-            $order->snap_items = json_encode($snap['pStatus']);
-
+            $order->snap_items = json_encode($snap['pStatus']);//?
             $order->save();
 
             $orderID = $order->id;
             $create_time = $order->create_time;
 
-            foreach($this->oProducts as &$p){//& 才可以对数组中的值做赋值操作
+            foreach($this->oProducts as &$p){//& 才可以对数组中的值做添加新键的操作 、 赋值操作//?
                 $p['order_id'] = $orderID;
             }
             $orderProduct = new OrderProduct();
@@ -109,10 +110,10 @@ class Order
 
         $snap['orderPrice'] = $status['orderPrice'];
         $snap['totalCount'] = $status['totalCount'];
-        $snap['pStatus'] = $status['pStatusArray'];
+        $snap['pStatus'] = $status['pStatusArray'];//?
         $snap['snapAddress'] = json_encode($this->getUserAddress());
 
-        //将第一个商品的信息作为订单的头号信息
+        //将第一个商品的信息作为订单的头信息
         $snap['snapName'] = $this->products[0]['name'];
         $snap['snapImg'] = $this->products[0]['main_img_url'];
 
@@ -173,11 +174,13 @@ class Order
         $status = [
             'pass' => true,
             'orderPrice' => 0,//订单总价
-            'totalCount' => 0,
+            'totalCount' => 0,//订单中所有商品总数量
             'pStatusArray' => []
         ];
+
         foreach ($this->oProducts as $oProduct) {
 
+            //检测各个商品的库存量
             $pStatus = $this->getProductStatus($oProduct['product_id'], $oProduct['count'], $this->products);
 
             if (!$pStatus['haveStock']) {
@@ -218,10 +221,12 @@ class Order
                 ]);
         } else {
 
+            //订单中当前商品
             $product = $products[$pIndex];
+
             $pStatus['id'] = $product['id'];
             $pStatus['name'] = $product['name'];
-            $pStatus['count'] = $oCount;
+            $pStatus['count'] = $oCount;//所买的当前商品的数量
             $pStatus['totalPrice'] = $product['price'] * $oCount;
 
             if ($product['stock'] - $oCount >= 0) {
@@ -232,7 +237,7 @@ class Order
         return $pStatus;
     }
 
-    public function checkOrderStack($orderID)
+    public function checkOrderStock($orderID)
     {
         $oProducts = OrderProduct::where('order_id','=',$orderID)
             ->select();
@@ -240,6 +245,7 @@ class Order
         $this->oProducts = $oProducts;
         $this->products = $this->getProductsByOrder($oProducts);
 
+        //库存量检测
         $status = $this->getOrderStatus();
         return $status;
     }

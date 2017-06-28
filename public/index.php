@@ -25,3 +25,9 @@ require __DIR__ . '/../thinkphp/start.php';
     'path' => LOG_PATH,
     'level' => ['sql']
 ]);
+
+function dd($v){
+	
+	var_dump($v);
+	die;
+}

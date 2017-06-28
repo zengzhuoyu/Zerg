@@ -25,6 +25,7 @@ class Theme
         if($result->isEmpty()){
             throw new ThemeMissException();
         }
+
         return $result;
 
     }

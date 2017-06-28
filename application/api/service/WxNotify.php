@@ -29,12 +29,14 @@ class WxNotify extends \WxPayNotify
             $orderNo = $data['out_trade_no'];
 
             Db::startTrans();
+
             try {
                 $order = OrderModel::where('order_no', '=', $orderNo)
                     ->lock(true)
                     ->find();
 
                 if ($order->status == OrderStatusEnum::UNPAID) {
+
                     $service = new OrderService();
                     $stockStatus = $service->checkOrderStock($order->id);
                     if ($stockStatus['pass']) {//如果通过库存量检测
@@ -43,8 +45,10 @@ class WxNotify extends \WxPayNotify
                     } else {
                         $this->updateOrderStatus($order->id, false);
                     }
+
+                    Db::commit();
                 }
-                Db::commit();
+                
             } catch (Exception $ex) {
 
                 Db::rollback();

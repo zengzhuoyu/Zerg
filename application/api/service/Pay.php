@@ -46,7 +46,7 @@ class Pay
 
         //库存量检测
         $orderService = new OrderService();
-        $status = $orderService->checkOrderStack($this->orderID);
+        $status = $orderService->checkOrderStock($this->orderID);
         if(!$status['pass']){//如果失败，就返回，支付请求在此被终止
             return $status;
         }
@@ -64,7 +64,7 @@ class Pay
         }
 
         $wxOrderData = new \WxPayUnifiedOrder();//没有命名空间的话，前面应该加上"\"
-        $wxOrderData->SetOut_trade_no($this->orderNo);
+        $wxOrderData->SetOut_trade_no($this->orderNO);
         $wxOrderData->SetTrade_type('JSAPI');
         $wxOrderData->SetTotal_fee($totalPrice * 100);
         $wxOrderData->SetBody('零食商贩');
@@ -80,14 +80,14 @@ class Pay
         $wxOrder = \WxPayApi::unifiedOrder($wxOrderData);
         // 失败时不会返回result_code
         if($wxOrder['return_code'] != 'SUCCESS' || $wxOrder['result_code'] !='SUCCESS'){
-            Log::record($wxOrder,'error');
-            Log::record('获取预支付订单失败','error');
-//            throw new Exception('获取预支付订单失败');
+            Log::record($wxOrder,'error');//?
+            Log::record('获取预支付订单失败','error');//?
+           // throw new Exception('获取预支付订单失败');//?
         }
 
         //$wxOrder 成功时返回的prepay_id
         //向用户推送消息
-        $this->recordPreOrder($wxOrder);
+        // $this->recordPreOrder($wxOrder);
         $signature = $this->sign($wxOrder);
 
         return $signature;
@@ -101,7 +101,7 @@ class Pay
         $jsApiPayData->SetTimeStamp((string)time());
         $rand = md5(time() . mt_rand(0, 1000));//随机字符串
         $jsApiPayData->SetNonceStr($rand);
-        $jsApiPayData->SetPackage('prepay_id=' . $wxOrder['prepay_id']);
+        // $jsApiPayData->SetPackage('prepay_id=' . $wxOrder['prepay_id']);
         $jsApiPayData->SetSignType('md5');
 
         $sign = $jsApiPayData->MakeSign();
