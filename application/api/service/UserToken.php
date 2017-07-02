@@ -74,7 +74,7 @@ class UserToken extends Token
         $value = json_encode($cacaheValue);//数组对象转换成字符串
 
         //令牌失效时间转换成缓存失效时间
-        $expire_in = config('setting.tokne_expire_in');
+        $expire_in = config('setting.token_expire_in');
 
         //使用tp5自带缓存 写入缓存
         $request = cache($key,$value,$expire_in);

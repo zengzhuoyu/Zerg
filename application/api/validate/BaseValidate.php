@@ -68,7 +68,7 @@ class BaseValidate extends Validate
 
     public function getDataByRule($array)
     {
-        if (array_key_exists('user_id', $array) | array_key_exists('uid', $array)) {
+        if (array_key_exists('user_id', $array) || array_key_exists('uid', $array)) {
             // 不允许包含user_id或者uid，防止恶意覆盖user_id外键
             throw new ParameterException([
                 'msg' => '参数中包含有非法的参数名user_id或者uid'
